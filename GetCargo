@@ -1,0 +1,69 @@
+import java.util.*;
+
+/*
+Унести с места
+На складе стоит большой груз. Груз стоит рядами, вам даны вес груза в каждом ряду, найдите такие подряды, где сумма весов грузов равна количеству рядов на которых они находятся. В качестве ответа выведите количество таких подрядов, это поможет перевести груз оптимальным способом.
+
+Входные данные: строка распределения весов в ряду
+
+Пример входных данных: "1,2,0" - введенные веса грузов в каждом ряду.
+
+Подряды:
+
+"2,0": 2+0 = 2 - количество цифр
+
+"1" : 1 = 1 - количество цифр
+
+“1,2,0”: 1+ 2 + 0 = 3 - количество цифр
+
+Выходные данные: количество рядов подходящих под условие
+
+Пример ответа: 3
+
+ */
+
+public class GetCargo {
+
+    public static int result = 0;
+
+    public static ArrayList<ArrayList<String>> getSubsets(String strin) {
+        String[] set = strin.split(",");
+        int n = set.length;
+        ArrayList<ArrayList<String>> arrays = new ArrayList<ArrayList<String>>();
+
+        for (int i = 0; i < (1 << n); i++) {
+            ArrayList<String> strings = new ArrayList<String>();
+            for (int j = 0; j < n; j++) {
+                if ((i & (1 << j)) > 0)
+                    strings.add(set[j]);
+            }
+            arrays.add(strings);
+        }
+        return arrays;
+    }
+
+    public static boolean calculateCondition(ArrayList<String> arrayList) {
+        int sum = 0;
+        for (int i = 0; i < arrayList.size(); i++) {
+            sum = sum + Integer.parseInt(arrayList.get(i));
+        }
+        if (arrayList.size() == sum && sum != 0) {
+            System.out.println("Условие выполнено для: " + arrayList);
+            return true;
+        } else return false;
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in); //System.in is a standard input stream
+        String str = sc.nextLine();              //reads string
+
+        ArrayList<ArrayList<String>> resultLists = getSubsets(str);
+        System.out.println(resultLists);
+
+        for (ArrayList<String> ar : resultLists) {
+            if (calculateCondition(ar)) result = result + 1;
+        }
+
+        System.out.println("result: " + result);
+    }
+}
